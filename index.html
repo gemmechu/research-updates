@@ -207,23 +207,23 @@ tr:last-child td{border-bottom:none}
 <!-- ===== FIXANYTHING ===== -->
 <div class="section" id="s-fixanything">
 
-  <p class="section-title">Overview — input | generated (side by side)</p>
+  <p class="section-title">Zero-Shot — overview (input | cleaned)</p>
   <div class="video-grid">
     <div class="video-card">
-      <div class="video-label"><strong>Camera orbit</strong></div>
+      <div class="video-label"><strong>Camera orbit (input | cleaned)</strong></div>
       <video src="fixanything/overview_camera_orbit.mp4" autoplay loop muted playsinline></video>
     </div>
     <div class="video-card">
-      <div class="video-label"><strong>Light rotate</strong></div>
+      <div class="video-label"><strong>Light rotate (input | cleaned)</strong></div>
       <video src="fixanything/overview_light_rotate.mp4" autoplay loop muted playsinline></video>
     </div>
   </div>
 
-  <p class="section-title" style="margin-top:24px">Zero-shot vs Fine-tuned — input | generated (side by side per scene)</p>
+  <p class="section-title" style="margin-top:24px">Zero-shot vs Fine-tuned — per scene (input | cleaned)</p>
   <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:0;margin-bottom:24px;border:1px solid var(--line);border-radius:8px;overflow:hidden">
     <div style="background:#10141a;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line);padding:8px;text-align:center">Scene · Envmap</div>
-    <div style="background:#10141a;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line);border-left:1px solid var(--line);padding:8px;text-align:center">Zero-shot</div>
-    <div style="background:#10141a;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line);border-left:1px solid var(--line);padding:8px;text-align:center">Fine-tuned (1500 steps)</div>
+    <div style="background:#10141a;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line);border-left:1px solid var(--line);padding:8px;text-align:center">Zero-shot (input | cleaned)</div>
+    <div style="background:#10141a;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line);border-left:1px solid var(--line);padding:8px;text-align:center">Fine-tuned 1500 steps (input | cleaned)</div>
 
     <div style="padding:8px 10px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line);display:flex;align-items:center">01_alleyway · belfast_sunset · light_rotate</div>
     <div style="border-left:1px solid var(--line);border-bottom:1px solid var(--line)"><video style="width:100%;display:block" src="fixanything/zs_01_alleyway__belfast_sunset_1k__light_rotate.mp4" autoplay loop muted playsinline></video></div>
@@ -256,6 +256,38 @@ tr:last-child td{border-bottom:none}
     <div style="padding:8px 10px;font-size:11px;color:var(--muted);display:flex;align-items:center">victorian · aarfontein · light_rotate</div>
     <div style="border-left:1px solid var(--line)"><video style="width:100%;display:block" src="fixanything/zs_victorian_style_house__aarfontein_dirt_road_1k__light_rotate.mp4" autoplay loop muted playsinline></video></div>
     <div style="border-left:1px solid var(--line)"><video style="width:100%;display:block" src="fixanything/ft_victorian_style_house__aarfontein_dirt_road_1k__light_rotate.mp4" autoplay loop muted playsinline></video></div>
+  </div>
+
+  <p class="section-title" style="margin-top:24px">Fine-tuned (W&B run 92nj4rcm · step 1500) — generated only</p>
+  <div class="video-grid">
+    <div class="video-card">
+      <div class="video-label"><strong>chinese_ground_small · aarfontein_dirt_road</strong></div>
+      <video src="fixanything/finetuned_aarfontein.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>chinese_ground_small · autumn_field</strong></div>
+      <video src="fixanything/finetuned_autumn_field.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>chinese_ground_small · spruit_sunrise</strong></div>
+      <video src="fixanything/finetuned_spruit_sunrise.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>chinese_ground_small · envmap12</strong></div>
+      <video src="fixanything/finetuned_envmap12.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>modern_house · autumn_field</strong></div>
+      <video src="fixanything/finetuned_modern_house.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>shelter · autumn_field</strong></div>
+      <video src="fixanything/finetuned_shelter.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>unfinished_building · autumn_field</strong></div>
+      <video src="fixanything/finetuned_unfinished_building.mp4" autoplay loop muted playsinline></video>
+    </div>
   </div>
 
 </div>
