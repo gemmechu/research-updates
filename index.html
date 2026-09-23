@@ -1,0 +1,336 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>Research Updates — Sep 22</title>
+<style>
+:root{color-scheme:dark;--bg:#090b0e;--panel:#14181e;--line:#2a313b;--text:#f4f6f8;--muted:#a7b0bb;--accent:#f1c75b;--good:#78d4c8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:14px}
+nav{position:sticky;top:0;z-index:10;padding:10px 16px;background:#090b0eee;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;align-items:center;backdrop-filter:blur(8px)}
+nav h1{margin:0;font-size:14px;font-weight:600;color:var(--accent);margin-right:8px}
+.nav-sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+button{border:1px solid var(--line);background:var(--panel);color:var(--muted);min-height:30px;padding:0 12px;border-radius:6px;cursor:pointer;font-size:13px}
+button.active{background:var(--accent);color:#111;border-color:var(--accent)}
+main{padding:20px;max-width:1200px;margin:0 auto}
+.section{display:none}.section.active{display:block}
+
+/* table */
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:24px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
+th{color:var(--muted);background:#10141a;font-weight:500}
+tr:last-child td{border-bottom:none}
+.num{font-variant-numeric:tabular-nums;font-family:monospace}
+.best{color:var(--good)}
+
+/* charts grid */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+.chart-card h3{margin:0 0 2px;font-size:13px;font-weight:500;color:var(--text)}
+.chart-card p{margin:0 0 10px;font-size:11px;color:var(--muted)}
+.chart-wrap{position:relative;width:100%;height:180px}
+.legend{display:flex;gap:16px;margin-top:8px;font-size:11px;color:var(--muted)}
+.leg-item{display:flex;align-items:center;gap:5px}
+.leg-solid{width:20px;height:2px;background:#2a78d6}
+.leg-dash{width:20px;height:0;border-top:2px dashed #eb6834}
+
+/* image grid */
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.img-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.img-label{padding:8px 12px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line)}
+.img-label strong{color:var(--text);font-weight:500}
+.img-card img{width:100%;height:auto;display:block;background:#050607}
+.img-caption{padding:6px 12px;font-size:11px;color:var(--muted)}
+
+/* dataset grid */
+.dataset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+.dataset-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.dataset-card img{width:100%;height:140px;object-fit:cover;display:block;background:#050607}
+.dataset-card-label{padding:6px 10px;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* video grid */
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.video-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.video-label{padding:8px 12px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line)}
+.video-label strong{color:var(--text);font-weight:500}
+.video-card video{width:100%;height:auto;display:block;background:#050607}
+.video-caption{padding:6px 12px;font-size:11px;color:var(--muted)}
+.video-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+
+.section-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px}
+
+@media(max-width:700px){.chart-grid,.img-grid,.video-grid,.video-grid-3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>Research — Sep 22</h1>
+  <div class="nav-sep"></div>
+  <button class="active" onclick="show('distill',this)">Distillation (SH Transfer)</button>
+  <button onclick="show('dataset',this)">New Dataset</button>
+  <button onclick="show('fixanything',this)">FixAnything</button>
+</nav>
+
+<main>
+
+<!-- ===== DISTILLATION ===== -->
+<div class="section active" id="s-distill">
+
+  <p class="section-title">Results</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Experiment</th>
+        <th>Train</th>
+        <th>Hold-out</th>
+        <th>Train PSNR</th>
+        <th>Val PSNR</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>PTv3 — rotation holdout</td>
+        <td>1 scene · 4 envmaps · 3 rotations</td>
+        <td>1 rotation</td>
+        <td class="num">40.5</td>
+        <td class="num">23.8</td>
+      </tr>
+      <tr>
+        <td>PTv3 — envmap holdout</td>
+        <td>1 scene · 3 envmaps · 5 rotations</td>
+        <td>1 envmap</td>
+        <td class="num">41.7</td>
+        <td class="num best">29.9</td>
+      </tr>
+      <tr>
+        <td>PTv3 — scene+envmap holdout</td>
+        <td>5 scenes · 3 envmaps · 5 rotations</td>
+        <td>2 scenes + 1 envmap</td>
+        <td class="num">32.9</td>
+        <td class="num">22.0</td>
+      </tr>
+      <tr>
+        <td>MLP — scene+envmap holdout</td>
+        <td>5 scenes · 3 envmaps · 5 rotations</td>
+        <td>2 scenes + 1 envmap</td>
+        <td class="num">28.5</td>
+        <td class="num">20.9</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="section-title">Training curves</p>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>PTv3 — rotation holdout</h3>
+      <p>1 scene · 4 envmaps · hold out 1 rotation</p>
+      <div class="chart-wrap"><canvas id="c1"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>PTv3 — envmap holdout</h3>
+      <p>1 scene · 3 envmaps · hold out 1 envmap</p>
+      <div class="chart-wrap"><canvas id="c2"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>PTv3 — scene+envmap holdout</h3>
+      <p>5 scenes · 3 envmaps · hold out 2 scenes + 1 envmap</p>
+      <div class="chart-wrap"><canvas id="c3"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>MLP — scene+envmap holdout</h3>
+      <p>5 scenes · 3 envmaps · hold out 2 scenes + 1 envmap</p>
+      <div class="chart-wrap"><canvas id="c4"></canvas></div>
+    </div>
+  </div>
+  <div class="legend">
+    <span class="leg-item"><span class="leg-solid"></span>train PSNR</span>
+    <span class="leg-item"><span class="leg-dash"></span>val PSNR</span>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:10px;margin-top:20px;margin-bottom:10px">
+    <p class="section-title" style="margin:0">Renders — noisy | pred | clean</p>
+    <div style="display:flex;gap:4px;margin-left:auto">
+      <button id="btn-train" onclick="setMode('train')">train</button>
+      <button id="btn-val" class="active" onclick="setMode('val')">val</button>
+    </div>
+  </div>
+  <div class="img-grid">
+    <div class="img-card">
+      <div class="img-label"><strong>PTv3 — rotation holdout</strong></div>
+      <img id="img-rot" src="" alt="rotation holdout noisy pred clean">
+      <div class="img-caption">val PSNR 23.8 dB · held-out rotation 30° · epoch 2100</div>
+    </div>
+    <div class="img-card">
+      <div class="img-label"><strong>PTv3 — envmap holdout</strong></div>
+      <img id="img-env" src="" alt="envmap holdout noisy pred clean">
+      <div class="img-caption">val PSNR 29.9 dB · held-out envmap spruit_sunrise · epoch 3000</div>
+    </div>
+    <div class="img-card">
+      <div class="img-label"><strong>PTv3 — scene+envmap holdout</strong></div>
+      <img id="img-ptv3" src="" alt="PTv3 combined holdout noisy pred clean">
+      <div class="img-caption">val PSNR 22.0 dB · unseen scene + unseen envmap · epoch 2700</div>
+    </div>
+    <div class="img-card">
+      <div class="img-label"><strong>MLP — scene+envmap holdout</strong></div>
+      <img id="img-mlp" src="" alt="MLP combined holdout noisy pred clean">
+      <div class="img-caption">val PSNR 20.9 dB · unseen scene + unseen envmap · epoch 2300</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== DATASET ===== -->
+<div class="section" id="s-dataset">
+
+  <p class="section-title">houses2 — 18 new scenes</p>
+  <div class="dataset-grid">
+    <div class="dataset-card"><img src="dataset/chinese_high_house_wood.jpg" alt="chinese_high_house_wood"><div class="dataset-card-label">chinese_high_house_wood</div></div>
+    <div class="dataset-card"><img src="dataset/classic_two_story_house.jpg" alt="classic_two_story_house"><div class="dataset-card-label">classic_two_story_house</div></div>
+    <div class="dataset-card"><img src="dataset/contemporary_house.jpg" alt="contemporary_house"><div class="dataset-card-label">contemporary_house</div></div>
+    <div class="dataset-card"><img src="dataset/house.jpg" alt="house"><div class="dataset-card-label">house</div></div>
+    <div class="dataset-card"><img src="dataset/house_kolb.jpg" alt="house_kolb"><div class="dataset-card-label">house_kolb</div></div>
+    <div class="dataset-card"><img src="dataset/medieval_house.jpg" alt="medieval_house"><div class="dataset-card-label">medieval_house</div></div>
+    <div class="dataset-card"><img src="dataset/medieval_house_2.jpg" alt="medieval_house_2"><div class="dataset-card-label">medieval_house_2</div></div>
+    <div class="dataset-card"><img src="dataset/modern_elegance_house.jpg" alt="modern_elegance_house"><div class="dataset-card-label">modern_elegance_house</div></div>
+    <div class="dataset-card"><img src="dataset/modern_house.jpg" alt="modern_house"><div class="dataset-card-label">modern_house</div></div>
+    <div class="dataset-card"><img src="dataset/modern_one_story_house.jpg" alt="modern_one_story_house"><div class="dataset-card-label">modern_one_story_house</div></div>
+    <div class="dataset-card"><img src="dataset/old_chinese_roof_house.jpg" alt="old_chinese_roof_house"><div class="dataset-card-label">old_chinese_roof_house</div></div>
+    <div class="dataset-card"><img src="dataset/single_family_house.jpg" alt="single_family_house"><div class="dataset-card-label">single_family_house</div></div>
+    <div class="dataset-card"><img src="dataset/single_family_residential_house.jpg" alt="single_family_residential_house"><div class="dataset-card-label">single_family_residential_house</div></div>
+    <div class="dataset-card"><img src="dataset/small_house.jpg" alt="small_house"><div class="dataset-card-label">small_house</div></div>
+    <div class="dataset-card"><img src="dataset/smart_house.jpg" alt="smart_house"><div class="dataset-card-label">smart_house</div></div>
+    <div class="dataset-card"><img src="dataset/studio_house_6.jpg" alt="studio_house_6"><div class="dataset-card-label">studio_house_6</div></div>
+    <div class="dataset-card"><img src="dataset/summer_house_a.jpg" alt="summer_house_a"><div class="dataset-card-label">summer_house_a</div></div>
+    <div class="dataset-card"><img src="dataset/wood_plant_house.jpg" alt="wood_plant_house"><div class="dataset-card-label">wood_plant_house</div></div>
+  </div>
+
+</div>
+
+<!-- ===== FIXANYTHING ===== -->
+<div class="section" id="s-fixanything">
+
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+    <p class="section-title" style="margin:0">Zero-shot — chinese_ground_small · aarfontein_dirt_road</p>
+  </div>
+  <div class="video-grid" style="grid-template-columns:1fr 1fr 1fr 1fr">
+    <div class="video-card">
+      <div class="video-label"><strong>Reference (noisy)</strong></div>
+      <video src="fixanything/zeroshot_reference.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>Generated</strong></div>
+      <video src="fixanything/zeroshot_generated.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>Target (clean)</strong></div>
+      <video src="fixanything/zeroshot_target.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>Comparison (ref | gen | gt)</strong></div>
+      <video src="fixanything/zeroshot_comparison.mp4" autoplay loop muted playsinline></video>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;margin-bottom:10px">
+    <p class="section-title" style="margin:0">Fine-tuned (1500 steps) — step_001500</p>
+  </div>
+  <div class="video-grid">
+    <div class="video-card">
+      <div class="video-label"><strong>chinese_ground_small · aarfontein_dirt_road</strong></div>
+      <video src="fixanything/finetuned_aarfontein.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>chinese_ground_small · autumn_field</strong></div>
+      <video src="fixanything/finetuned_autumn_field.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>chinese_ground_small · spruit_sunrise</strong></div>
+      <video src="fixanything/finetuned_spruit_sunrise.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>modern_house · autumn_field</strong></div>
+      <video src="fixanything/finetuned_modern_house.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>shelter · autumn_field</strong></div>
+      <video src="fixanything/finetuned_shelter.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="video-card">
+      <div class="video-label"><strong>unfinished_building · autumn_field</strong></div>
+      <video src="fixanything/finetuned_unfinished_building.mp4" autoplay loop muted playsinline></video>
+    </div>
+  </div>
+
+</div>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function show(id, btn) {
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('s-' + id).classList.add('active');
+}
+
+const BLUE='#2a78d6', ORANGE='#eb6834';
+const grid='rgba(255,255,255,0.06)', tick='#a7b0bb';
+
+function mkChart(id, epochs, train, val) {
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: {labels: epochs, datasets: [
+      {label:'Train', data:train, borderColor:BLUE, borderWidth:2, pointRadius:0, tension:0.3},
+      {label:'Val',   data:val,   borderColor:ORANGE, borderWidth:2, borderDash:[5,3], pointRadius:0, tension:0.3}
+    ]},
+    options: {
+      responsive:true, maintainAspectRatio:false, animation:false,
+      plugins:{legend:{display:false}, tooltip:{mode:'index',intersect:false}},
+      scales:{
+        x:{ticks:{color:tick,font:{size:10},maxTicksLimit:5}, grid:{color:grid},
+           title:{display:true,text:'epoch',color:tick,font:{size:10}}},
+        y:{min:18, max:45, ticks:{color:tick,font:{size:10},stepSize:5}, grid:{color:grid},
+           title:{display:true,text:'PSNR (dB)',color:tick,font:{size:10}}}
+      }
+    }
+  });
+}
+
+mkChart('c1',
+  [100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100],
+  [26.5,27.6,28.8,29.1,30.7,32.3,32.6,33.3,34.2,35.2,35.5,35.8,37.0,36.5,37.8,38.0,38.9,39.0,39.7,39.7,40.5],
+  [24.7,23.4,23.3,22.8,22.8,23.4,23.1,23.4,23.6,23.5,23.2,23.8,23.9,23.5,23.5,23.6,23.8,23.4,23.7,23.6,23.8]
+);
+mkChart('c2',
+  [100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000],
+  [26.2,27.4,28.4,29.8,30.2,30.8,32.0,32.1,33.0,34.6,35.0,35.5,36.2,36.8,36.8,37.9,38.2,39.0,39.2,39.6,40.1,40.7,41.0,41.1,41.4,41.5,41.6,41.6,41.7,41.7],
+  [23.3,24.4,25.4,25.9,26.5,26.9,27.4,27.4,27.9,28.4,28.7,28.9,29.1,29.1,29.4,29.3,29.6,29.7,29.9,29.8,29.7,29.8,29.9,29.9,29.9,29.9,29.9,29.9,29.9,29.9]
+);
+mkChart('c3',
+  [100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700],
+  [25.1,25.6,26.0,26.0,26.6,26.8,26.6,27.4,27.7,28.2,28.6,28.9,29.0,29.3,29.5,30.0,30.2,30.7,30.8,31.4,31.7,31.9,32.2,32.5,32.6,32.8,32.9],
+  [22.1,22.2,22.3,22.2,22.4,22.4,22.6,22.2,22.4,22.2,22.2,22.6,21.9,21.8,22.1,22.3,22.0,22.1,22.1,21.9,22.0,21.9,22.0,22.0,22.0,21.9,21.9]
+);
+mkChart('c4',
+  [100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300],
+  [23.5,24.8,24.7,25.2,26.0,25.3,25.5,26.0,26.6,26.8,27.0,27.2,26.9,27.1,27.5,27.4,27.4,27.7,27.9,27.9,28.1,28.3,28.5],
+  [21.5,21.9,22.1,21.8,21.8,21.8,22.0,21.8,21.5,21.6,21.6,21.4,21.6,21.4,21.1,21.3,21.0,21.2,20.8,20.5,21.0,20.8,20.9]
+);
+
+const IMGS = {
+  val:   { rot:"images/latest_val_rot.png", env:"images/latest_val_env_trimmed.png", ptv3:"images/latest_val_ptv3_trimmed.png", mlp:"images/latest_val_mlp_trimmed.png" },
+  train: { rot:"images/latest_train_rot.png", env:"images/latest_train_env.png", ptv3:"images/latest_train_ptv3.png", mlp:"images/latest_train_mlp.png" }
+};
+
+function setMode(mode) {
+  const imgs = IMGS[mode];
+  document.getElementById('img-rot').src  = imgs.rot;
+  document.getElementById('img-env').src  = imgs.env;
+  document.getElementById('img-ptv3').src = imgs.ptv3;
+  document.getElementById('img-mlp').src  = imgs.mlp;
+  document.getElementById('btn-train').classList.toggle('active', mode==='train');
+  document.getElementById('btn-val').classList.toggle('active', mode==='val');
+}
+
+setMode('val');
+</script>
+</body></html>
