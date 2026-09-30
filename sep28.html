@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Research Updates — Week of Sep 28</title>
+  <style>
+    :root{color-scheme:dark;--bg:#090b0e;--panel:#14181e;--panel2:#10141a;--line:#2a313b;--text:#f4f6f8;--muted:#a7b0bb;--accent:#f1c75b;--train:#78d4c8;--test:#d89af4}
+    *{box-sizing:border-box}[hidden]{display:none!important}
+    body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,sans-serif}
+    header{position:sticky;top:0;z-index:20;background:#090b0ef2;border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+    .topbar,.subbar{display:flex;align-items:center;gap:8px;padding:10px 18px;flex-wrap:wrap}.subbar{padding-top:0;padding-bottom:10px}
+    h1{font-size:14px;color:var(--accent);margin:0 14px 0 0;font-weight:650}
+    button,.back{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:7px 14px;border-radius:7px;font:inherit;cursor:pointer;text-decoration:none}
+    button.primary{font-size:14px;font-weight:650}button.active{color:#111;background:var(--accent);border-color:var(--accent)}.back{margin-left:auto}
+    main{max-width:1560px;margin:0 auto;padding:24px 20px 60px}.panel{display:none}.panel.active{display:block}
+    .page-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin:0 0 22px}.page-head h2{font-size:24px;margin:0 0 4px}.page-head p{margin:0;color:var(--muted)}
+    .stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.stat{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 11px;color:var(--muted);white-space:nowrap}.stat strong{color:var(--text)}
+    .group-heading{margin:34px 0 15px;padding-bottom:8px;border-bottom:1px solid var(--line);color:var(--accent);font-size:17px}
+    .scene{margin:0 0 30px}.scene h3{font-size:14px;margin:0 0 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .badge{padding:3px 8px;border-radius:999px;font-size:10px;letter-spacing:.05em;font-weight:750}.badge.train{color:#071b17;background:var(--train)}.badge.test{color:#1d0924;background:var(--test)}
+    .scene-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    figure{margin:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--panel)}figure a{display:block;background:#fff}figure img{display:block;width:100%;height:auto;background:#fff}
+    figcaption{border-top:1px solid var(--line);padding:8px 10px;color:var(--muted);font-size:12px}
+    .result-wrap{max-width:1250px;margin:0 auto}.result-card{margin:0 0 24px}.result-card img{width:100%;height:auto;display:block}.result-card figcaption{font-size:13px;padding:11px 13px}.result-note{color:var(--muted);margin:0 0 16px}
+    .columns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.columns span{border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:4px 10px;color:var(--text);font-size:12px}.loading{color:var(--muted);padding:24px 0}
+    @media(max-width:900px){.scene-grid{grid-template-columns:1fr}.page-head{display:block}.stats{justify-content:flex-start;margin-top:12px}}
+    @media(max-width:620px){main{padding:18px 10px 40px}.back{margin-left:0}.topbar,.subbar{padding-left:10px;padding-right:10px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <h1>Research Update · Sep 28</h1>
+    <button class="primary active" data-primary="dataset">Dataset</button>
+    <button class="primary" data-primary="distillation">Distillation</button>
+    <a class="back" href="index.html">← Week of Sep 22</a>
+  </div>
+  <div class="subbar" id="dataset-tabs"><button class="active" data-panel="dataset-train">Train</button><button data-panel="dataset-test">Test</button></div>
+  <div class="subbar" id="distillation-tabs" hidden><button class="active" data-panel="distillation-ptv3">PTV3</button><button data-panel="distillation-splatformer">SplatFormer</button></div>
+</header>
+
+<main>
+  <section class="panel active" id="dataset-train">
+    <div class="page-head"><div><h2>Training dataset</h2><p>Noisy and clean PLY pairs shown through the same QA cameras.</p></div><div class="stats"><span class="stat"><strong>128</strong> pairs</span><span class="stat"><strong>36</strong> scenes</span><span class="stat"><strong>9</strong> environment maps</span></div></div>
+    <div id="train-gallery" class="loading">Loading training scenes…</div>
+  </section>
+  <section class="panel" id="dataset-test">
+    <div class="page-head"><div><h2>Evaluation dataset</h2><p>Seen/new lighting and unseen-scene generalization splits.</p></div><div class="stats"><span class="stat"><strong>65</strong> pairs</span><span class="stat"><strong>9</strong> unseen scenes</span><span class="stat"><strong>2</strong> held-out lights</span></div></div>
+    <div id="test-gallery" class="loading">Loading evaluation scenes…</div>
+  </section>
+  <section class="panel" id="distillation-ptv3">
+    <div class="page-head"><div><h2>PTV3 distillation</h2><p>Best validation checkpoint · epoch 3600</p></div><div class="stats"><span class="stat"><strong>31.6 dB</strong> train</span><span class="stat"><strong>22–24 dB</strong> evaluation</span></div></div>
+    <div class="result-wrap"><p class="result-note">Each row compares the noisy input, the PTV3 prediction, and the clean target.</p><figure class="result-card"><a href="sep28/results/ptv3_validation_best.png" target="_blank"><img src="sep28/results/ptv3_validation_best.png" alt="PTV3 validation results: noisy input, prediction, and clean target"></a><figcaption>PTV3 validation results<div class="columns"><span>Noisy input</span><span>Prediction</span><span>Clean target</span></div></figcaption></figure></div>
+  </section>
+  <section class="panel" id="distillation-splatformer">
+    <div class="page-head"><div><h2>SplatFormer distillation</h2><p>Full validation · step 6000</p></div><div class="stats"><span class="stat"><strong>33.8 dB</strong> train</span><span class="stat"><strong>22–24 dB</strong> evaluation</span></div></div>
+    <div class="result-wrap">
+      <p class="result-note">Every panel is ordered as noisy input, SplatFormer prediction, and Blender ground truth.</p>
+      <figure class="result-card"><a href="sep28/results/splatformer_seen_scene_new_light.png" target="_blank"><img src="sep28/results/splatformer_seen_scene_new_light.png" alt="SplatFormer result on a seen scene under new lighting"></a><figcaption>Seen scene · new lighting</figcaption></figure>
+      <figure class="result-card"><a href="sep28/results/splatformer_unseen_scene_seen_light.png" target="_blank"><img src="sep28/results/splatformer_unseen_scene_seen_light.png" alt="SplatFormer result on an unseen scene under seen lighting"></a><figcaption>Unseen scene · seen lighting</figcaption></figure>
+      <figure class="result-card"><a href="sep28/results/splatformer_unseen_scene_new_light.png" target="_blank"><img src="sep28/results/splatformer_unseen_scene_new_light.png" alt="SplatFormer result on an unseen scene under new lighting"></a><figcaption>Unseen scene · new lighting</figcaption></figure>
+    </div>
+  </section>
+</main>
+
+<script>
+const primaryDefaults={dataset:'dataset-train',distillation:'distillation-ptv3'};
+const panels=[...document.querySelectorAll('.panel')];
+function showPanel(id){panels.forEach(panel=>panel.classList.toggle('active',panel.id===id));document.querySelectorAll('[data-panel]').forEach(button=>button.classList.toggle('active',button.dataset.panel===id));window.scrollTo({top:0,behavior:'instant'});}
+document.querySelectorAll('[data-primary]').forEach(button=>button.addEventListener('click',()=>{const primary=button.dataset.primary;document.querySelectorAll('[data-primary]').forEach(item=>item.classList.toggle('active',item===button));document.getElementById('dataset-tabs').hidden=primary!=='dataset';document.getElementById('distillation-tabs').hidden=primary!=='distillation';showPanel(primaryDefaults[primary]);}));
+document.querySelectorAll('[data-panel]').forEach(button=>button.addEventListener('click',()=>showPanel(button.dataset.panel)));
+
+const splitLabels={test_seen_scene_new_light:'Seen scene · new lighting',test_unseen_scene_seen_light:'Unseen scene · seen lighting',test_unseen_scene_new_light:'Unseen scene · new lighting'};
+function make(tag,className,text){const element=document.createElement(tag);if(className)element.className=className;if(text!==undefined)element.textContent=text;return element;}
+function renderScenes(container,pairs,badge){
+  const byScene=new Map();pairs.sort((a,b)=>a.scene_id.localeCompare(b.scene_id)||a.lighting.localeCompare(b.lighting));
+  for(const pair of pairs){if(!pair.image)continue;if(!byScene.has(pair.scene_id))byScene.set(pair.scene_id,[]);byScene.get(pair.scene_id).push(pair);}
+  for(const [scene,scenePairs] of byScene){
+    const section=make('section','scene'),title=make('h3');title.appendChild(make('span','badge '+badge,badge.toUpperCase()));title.appendChild(document.createTextNode(scene));section.appendChild(title);
+    const grid=make('div','scene-grid');
+    for(const pair of scenePairs){const figure=make('figure'),link=make('a');link.href=pair.image;link.target='_blank';const image=make('img');image.src=pair.image;image.loading='lazy';image.alt=`${scene}: ${pair.lighting}`;link.appendChild(image);figure.appendChild(link);figure.appendChild(make('figcaption','',pair.lighting));grid.appendChild(figure);}
+    section.appendChild(grid);container.appendChild(section);
+  }
+}
+fetch('sep28/split.json').then(response=>{if(!response.ok)throw new Error('Could not load sep28/split.json');return response.json();}).then(({pairs})=>{
+  const train=document.getElementById('train-gallery');train.className='';train.textContent='';renderScenes(train,pairs.filter(pair=>pair.split==='train'),'train');
+  const test=document.getElementById('test-gallery');test.className='';test.textContent='';for(const split of Object.keys(splitLabels)){test.appendChild(make('h2','group-heading',splitLabels[split]));renderScenes(test,pairs.filter(pair=>pair.split===split),'test');}
+}).catch(error=>{document.getElementById('train-gallery').textContent=error.message;document.getElementById('test-gallery').textContent=error.message;});
+</script>
+</body>
+</html>
