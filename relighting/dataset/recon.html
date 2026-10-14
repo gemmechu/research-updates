@@ -121,6 +121,5 @@ function setMode(){const rv=document.querySelector(".rv");if(!rv)return;rv.class
 function scene(){view=Math.min(view,D.scenes[cur].views.length-1);picker();drawMap();drawViewer();drawRelight()}
 document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"&&e.target.type!=="range")return;const k={"1":"gt","2":"pgsr","3":"matspray","4":"ltx"}[e.key];if(!k)return;
  const v=D.scenes[cur].views[view];if(v[k]){src=k;drawViewer()}if(k!=="pgsr"&&rmode!=="side"){rmode=k;setMode()}});
- const v=D.scenes[cur].views[view];if(v[k]){src=k;drawViewer()}if(k!=="pgsr"&&rmode!=="side"){rmode=k;setMode()}});
 fetch("recon.json",{cache:"no-cache"}).then(r=>r.json()).then(j=>{D=j;cur=Math.max(0,D.scenes.findIndex(s=>s.scene===D.example));scene()});
 </script></body></html>
