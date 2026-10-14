@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relighting Dataset Overview</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--fg:#1d1d1f;--muted:#6b6b70;--line:#e3e3e0;--accent:#2f6fde;--chip:#eef1f6;--warn:#8a5a00;--warn-bg:#fbf0d9}
+@media (prefers-color-scheme:dark){:root{--bg:#121214;--card:#1c1c1f;--fg:#ececef;--muted:#9a9aa2;--line:#2c2c31;--accent:#7aa7ff;--chip:#24262c;--warn:#f0c46a;--warn-bg:#3a2f17}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1360px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+header.top .wrap{padding-top:10px;padding-bottom:8px}
+.navrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}.brand{font-weight:700;font-size:16px;margin-right:4px}nav.main{display:flex;flex-wrap:wrap;gap:4px}nav.main a{color:var(--fg);text-decoration:none;font-size:14.5px;font-weight:500;padding:4px 12px;border-radius:8px}nav.main a:hover{background:var(--chip)}nav.main a.on{background:var(--accent);color:#fff}nav.sec{display:flex;flex-wrap:wrap;gap:4px 16px;padding:7px 0 0}nav.sec a{color:var(--muted);text-decoration:none;font-size:12.5px}nav.sec a:hover{color:var(--accent)}
+section{padding:22px 0 8px;scroll-margin-top:96px}h2{font-size:17px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 12px;max-width:980px}
+.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));margin:6px 0 22px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.tile .v{font-size:26px;font-weight:650;letter-spacing:-.01em;line-height:1.15}.tile .k{font-size:13px;font-weight:600;margin-top:2px}.tile .d{font-size:12px;color:var(--muted);margin-top:4px}
+.tile a{color:var(--accent);text-decoration:none}
+.catbars{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 14px}
+.cb{display:grid;grid-template-columns:120px minmax(160px,1.1fr) minmax(0,1.6fr) 120px;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.cb:last-child{border-bottom:0}.cb.h{color:var(--muted);font-size:12px;padding:4px 0}
+.cb .n{font-weight:600}.track{position:relative;height:16px}
+.bar{position:absolute;left:0;top:2px;height:12px;background:var(--accent);border-radius:0 4px 4px 0}
+.bar-l{position:absolute;top:0;font-size:12px;color:var(--fg);white-space:nowrap}
+.vars{display:flex;flex-wrap:wrap;gap:4px}.chip{background:var(--chip);border-radius:6px;padding:1px 7px;font-size:12px;white-space:nowrap}
+.chip .c{color:var(--muted)}.num{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.tab{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;padding:4px 11px;cursor:pointer;font-size:12.5px}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}.tab.sm{font-size:12px;padding:2px 10px}
+.step{display:grid;grid-template-columns:210px minmax(0,1fr);gap:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 12px}
+.step .t{font-weight:650;font-size:14.5px}.step .t b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;margin-right:7px}
+.step .x{color:var(--muted);font-size:12.5px;margin-top:6px}.step h4{font-size:12px;color:var(--muted);font-weight:600;margin:12px 0 6px}.step h4:first-child{margin-top:0}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px}.sw figure{margin:0;min-width:0}.sw img{width:100%;aspect-ratio:1;border-radius:6px;display:block;background:#ececea}
+.sw figcaption{font-size:10.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:14px;align-items:start}
+.camsvg{width:100%;height:auto;max-height:440px;border-radius:8px;display:block;background:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--muted);margin-top:5px}.legend i{display:inline-block;width:14px;height:0;border-top:2px solid #d6200f;vertical-align:middle;margin-right:4px}
+.legend b{display:inline-grid;place-items:center;width:14px;height:14px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;margin-right:4px;vertical-align:middle}
+.facts{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.g{display:grid;gap:6px}.g6{grid-template-columns:repeat(6,minmax(0,1fr))}.g5{grid-template-columns:repeat(5,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cell{position:relative;min-width:0}.cell img,.cell video{width:100%;aspect-ratio:1;display:block;border-radius:6px;background:#808080;object-fit:cover}
+.cell .lab{font-size:11.5px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cell .lab b{color:var(--fg);font-weight:600}.cell .env{width:100%;aspect-ratio:2/1;border-radius:4px;margin-top:4px;display:block}
+.badge{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;border-radius:5px;padding:0 6px}
+.night{background:var(--warn-bg);color:var(--warn)}
+.grow{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 10px}
+.grow .n{font-weight:650;font-size:14.5px}.grow .m{color:var(--muted);font-size:12px}.grow a{color:var(--accent);font-size:12px;cursor:pointer;text-decoration:none}
+.envgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.ec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px;min-width:0}.ec img{width:100%;aspect-ratio:2/1;display:block;border-radius:6px}
+.ec .nm{font-size:12.5px;font-weight:600;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ec .u{font-size:11.5px;color:var(--muted)}
+.ec .bs{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.modgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}.modgrid .ec img{aspect-ratio:1;background:#ececea}
+.qa{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:12px 14px;margin:0 0 14px;max-width:1080px}
+.qa p{margin:0;font-size:13.5px}.h2s{font-size:15px;margin:18px 0 6px}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:0 0 16px;counter-reset:fl}
+.flow div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 10px;font-size:12px;color:var(--muted);position:relative}
+.flow div b{display:block;color:var(--fg);font-size:13px;margin-bottom:2px}.flow div b::before{counter-increment:fl;content:counter(fl);display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;margin-right:6px}
+.flow code,.qa code,.rc code{font-size:11.5px;background:var(--chip);border-radius:4px;padding:0 4px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin:0 0 16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}.box h3{font-size:14px;margin:0 0 6px}.box ul{margin:0;padding-left:18px;font-size:13px}.box li{margin:3px 0}
+pre{margin:6px 0 0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;color:var(--fg)}
+pre .c{color:var(--muted)}
+.gen2{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start}.gen2 pre{margin:0}.gen2 ul{margin:0;padding-left:18px;font-size:13px}.gen2 li{margin:4px 0}
+.recipes{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.rc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px;min-width:0}
+.rc h3{font-size:14.5px;margin:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;align-items:baseline}.rc h3 span{font-size:11.5px;color:var(--muted);font-weight:400;white-space:nowrap}
+.rc p{margin:6px 0 0}.rc .l{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;margin-top:8px}
+.tip{position:fixed;pointer-events:none;z-index:20;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:12px;box-shadow:0 4px 16px rgba(0,0,0,.15);display:none;max-width:280px}
+footer{color:var(--muted);font-size:12px;padding:20px 0 40px}
+@media (max-width:900px){.two,.gen2{grid-template-columns:1fr}.step,.grow{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.cb{grid-template-columns:100px minmax(0,1fr)}.cb .vars,.cb .num,.cb.h{display:none}
+ .g6{grid-template-columns:repeat(3,minmax(0,1fr))}.g5{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style></head><body>
+<header class="top"><div class="wrap"><div class="navrow"><span class="brand">Procedural relighting</span><nav class="main"><a href="index.html" class="on">Dataset</a><a href="recon.html">Reconstruction</a><a href="../ltx_eval/">LTX eval</a></nav></div><nav class="sec"><a href="#overview">Overview</a><a href="#make">How a scene is made</a><a href="#cats">Categories</a><a href="#models">3D models</a><a href="#env">Environment maps</a></nav></div></header>
+<main class="wrap">
+<section id="overview"><p class="sub" id="lede"></p><div class="tiles" id="tiles"></div>
+<h2>Scenes per category</h2><p class="sub">Each category is a seeded generator with a few layout variants; textures and models are counted over the scenes that were actually generated.</p>
+<div class="catbars" id="catbars"></div></section>
+<section id="make"><h2>How a scene is made</h2><div id="genbody"></div>
+<h2 class="h2s">One scene through the pipeline</h2><p class="sub">Pick a category, then one of its samples:</p><div class="tabs" id="picker"></div><div class="tabs" id="picker2"></div><div id="steps"></div></section>
+<section id="cats"><h2>Categories side by side</h2><p class="sub" id="modecap"></p><div class="tabs" id="modes"></div><div class="tabs" id="gcats"></div><div id="gallery"></div></section>
+<section id="models"><h2>3D models</h2><p class="sub" id="modcap"></p><div class="tabs" id="modtabs"></div><div class="modgrid" id="modgrid"></div></section>
+<section id="env"><h2>Environment maps</h2><p class="sub" id="envcap"></p><div class="tabs" id="envtabs"></div><div class="envgrid" id="envgrid"></div></section>
+<footer>Built by tools/report/build_dataset_site.py (model thumbnails: tools/report/render_model_thumbs.py). Thumbnails are 200&ndash;400 px copies; renders are 800&times;800 Blender Cycles, envmap lighting only. Transparent sky in training captures is shown on grey.</footer>
+</main><div class="tip" id="tip"></div>
+<script>
+let D,cur=0,mode="layout",gcat="all",envf="all",modf="all";
+const $=id=>document.getElementById(id),fmt=n=>n.toLocaleString("en-US"),pretty=s=>String(s).replace(/_/g," ");
+const env=n=>n.replace(/_1k$/,"").replace(/_/g," ");
+const OBS={};  // one lazy-play observer per container, so re-rendering one section leaves the other's videos alone
+function watch(root){OBS[root.id]?.disconnect();const o=new IntersectionObserver(es=>{for(const e of es){const v=e.target;if(e.isIntersecting){if(!v.src)v.src=v.dataset.src;v.play().catch(()=>{})}else v.pause()}},{rootMargin:"200px"});
+ root.querySelectorAll("video[data-src]").forEach(v=>o.observe(v));OBS[root.id]=o}
+function catLabel(s){return pretty(s.family)+(s.capture==="orbit"?" · orbit":"")}
+function tabs(el,items,on,cb){el.innerHTML=items.map(([k,n])=>`<button class="tab${k===on?" on":""}" data-k="${k}">${n}</button>`).join("");el.querySelectorAll("button").forEach(b=>b.onclick=()=>cb(b.dataset.k))}
+function tiles(){const s=D.stats,t=[
+ [fmt(s.scenes),"scenes",`${fmt(s.walk)} walk-through + ${fmt(s.orbit)} orbit captures; ${fmt(s.heldout_scenes)} held out as unseen scenes`],
+ [s.categories,"categories",`${s.variants} layout variants / styles in total`],
+ [fmt(s.textures_used),"PBR textures",`used, out of a pool of ${fmt(s.textures_pool)} CC0 Poly Haven sets (diffuse, roughness, normal)`],
+ [fmt(s.models_used)+"+","3D models",`props, building parts and plants used, out of ${fmt(s.models_pool)} CC0 models (house fences/trees not logged). <a href="#models">See them</a>`],
+ [s.envmaps,"environment maps",`${s.envmaps_source} used as capture light; ${s.envmaps_night} night/dusk maps are test-only`],
+ ["4","lightings per scene",`1 capture light at yaw 0 + 3 other maps at random yaw = ${fmt(s.lit_captures)} lit captures`],
+ [(s.still_frames/1e6).toFixed(2)+"M","rendered views",`150 cameras per walk scene, 100 per orbit scene, each under 4 lightings (800×800)`],
+ [fmt(s.rotate_scenes),"scenes with light-rotation GT",`${fmt(s.rotate_clips)} clips (3 views × 4 lights) × 36 yaws = ${(s.rotate_frames/1e6).toFixed(2)}M frames`]];
+ $("tiles").innerHTML=t.map(([v,k,d])=>`<div class="tile"><div class="v">${v}</div><div class="k">${k}</div><div class="d">${d}</div></div>`).join("");
+ $("lede").textContent=`${fmt(s.scenes)} procedurally generated outdoor scenes built from CC0 assets, rendered in Blender Cycles under environment-map lighting only (no local lights). Median scene: ${s.median_objects} objects, ${fmt(s.median_faces)} faces.`}
+function genSection(){const G=D.generator||{},tot=Object.entries(G).filter(([k])=>k!=="_shared").reduce((a,[,v])=>a+v.lines,0);
+ const files=D.categories.map(c=>[c.key,G[c.key]]).filter(([,g])=>g).sort((a,b)=>a[0].localeCompare(b[0]));
+ let h=`<div class="qa"><p>Each category has its own <b>rule-based Python generator</b> (<code>tools/scene_gen/families/&lt;category&gt;.py</code>): `+
+  files.map(([k,g])=>`<code title="${fmt(g.lines)} lines">${g.files[0].split("/").pop()}</code>`).join(" ")+
+  `. Blender runs the script with a seed, and the same seed gives the same scene.</p></div>`;
+ h+=`<div class="flow">`+[
+  ["Pick a variant","The seed picks a layout variant (e.g. gothic cathedral); variants are balanced over consecutive seeds."],
+  ["Sample sizes","Dimensions are drawn from real-world ranges in metres (nave 10–16 m, lane width, number of floors…)."],
+  ["Build from parts","Footprint → walls split into bays → openings → roofs, towers and details, in a fixed architectural order."],
+  ["Dress the site","Props and trees are placed by rejection sampling: accepted only if clear of the building, the walk and each other."],
+  ["Texture","Each surface draws a CC0 texture from its role's pool (wall, roof, paving…), train/eval split; shiny and transparent materials are removed."],
+  ["Plan the walk","The script also writes the camera route, look-at points, raised stations and keep-out zones."],
+  ["Save + render","Scaled to 0.1 units/m, saved as .blend + JSON; 150 cameras are generated and rendered in Cycles under envmap light only."]
+ ].map(([t,d])=>`<div><b>${t}</b>${d}</div>`).join("")+`</div>`;
+ const cg=G.church||{lines:0},C=t=>`<span class="c">${t}</span>`;
+ h+=`<div class="box" style="margin:0 0 14px"><h3>Inside one generator: <code>church.py</code> (${fmt(cg.lines)} lines)</h3>`+
+  `<p class="sub" style="margin:0 0 8px">Every generator has the same shape: a list of variants, a library of parts, one builder per variant, and a site function that dresses the surroundings and plans the camera walk. Blender calls <code>build(ctx)</code>. Simplified, with the village-church builder written out:</p>`+
+  `<div class="gen2"><pre>`+
+  `VARIANTS = ["gothic_cathedral", "romanesque", "village_church", "domed"]
+
+`+
+  `class Church:                          ${C("# the parts library, all in metres")}
+`+
+  `    body_part, gable_roof, apse, tower, drum_dome    ${C("# volumes and roofs")}
+`+
+  `    opening, tracery, rose, door, niches             ${C("# windows / portals cut into the walls")}
+`+
+  `    buttress, flyer, pinnacle, steps, cross          ${C("# details")}
+
+`+
+  `def build_village(ch, rng):            ${C("# one builder per variant (also gothic, romanesque, domed)")}
+`+
+  `    Wn, Ln, Hn = U(6.5, 9.5), U(10, 16), U(5, 7)     ${C("# nave width, length, wall height (m)")}
+`+
+  `    pitch = U(42, 55)                                ${C("# roof pitch (deg)")}
+`+
+  `    ridge = Hn + Wn / 2 * tan(pitch)
+`+
+  `    Ht = max(U(12, 18), ridge + U(4, 6))             ${C("# tower always clears the ridge")}
+`+
+  `    top = choice(["spire", "broach", "pyramid", "flat"])
+`+
+  `    nw = max(2, round(Ln / U(3.5, 5.0)))             ${C("# one window per 3.5-5 m of nave")}
+`+
+  `    for side in ("left", "right"):
+`+
+  `        pos = [Ln * (k + 0.5) / nw for k in range(nw)]   ${C("# centred in equal bays")}
+`+
+  `        windows_along(ch, nave, side, pos, width=U(0.75, 1.25), ...)
+`+
+  `    ...                                              ${C("# chancel, porch, tower, doors, roofs")}
+
+`+
+  `def build_site(ctx, ch, ...):          ${C("# churchyard, paths, trees, headstones, props;")}
+`+
+  `    ...                                ${C("# each item accepted only if clear (Site.ok)")}
+`+
+  `    return walk_layout                 ${C("# camera route, look-at points, raised terrace, keep-outs")}
+
+`+
+  `def build(ctx):                        ${C("# entry point")}
+`+
+  `    variant = seeded pick, balanced over every 4 seeds
+`+
+  `    mats = church_materials(ctx, variant)    ${C("# wall / roof / spire textures from their pools")}
+`+
+  `    ch = Church(ctx); BUILDERS[variant](ch, rng)
+`+
+  `    ch.finish(mats)                    ${C("# meshes, boolean-cut openings, UVs, materials")}
+`+
+  `    return {"layout": build_site(ctx, ch, ...)}
+
+`+
+  `${C("# U(a, b) = rng.uniform(a, b); rng is seeded by (family, seed)")}</pre>`+
+  `<div><h4 style="margin-top:0">Why it looks like a church</h4><ul>`+
+  `<li>A <b>vocabulary of parts</b> (nave, aisles, transept, apse, buttresses, towers, spires, rose window, portals) and <b>the rules that combine them</b>.</li>`+
+  `<li>Parts are placed <b>relative to the plan</b>, not at random: windows centred in equal bays, buttresses on the bay lines, the tower at the west front.</li>`+
+  `<li><b>Proportions are constrained</b>: the tower always clears the nave roof, aisles are lower than the nave, roof pitch stays within 42–60°.</li>`+
+  `<li>Randomness only picks values <b>inside those rules</b> (sizes, counts, styles, which optional parts exist), so every seed is a different but believable building.</li>`+
+  `<li>If a draw cannot fit (e.g. no valid camera route), the dispatcher <b>retries with a derived seed</b>.</li>`+
+  `<li>The other categories follow the same pattern with their own parts and rules (an alley: facade rows, fire escapes, props along the lane; a temple: columns on a grid, entablature, pediment).</li></ul></div></div></div>`;
+ $("genbody").innerHTML=h}
+function catbars(){const max=Math.max(...D.categories.map(c=>c.scenes));
+ let h=`<div class="cb h"><div>category</div><div>scenes</div><div>layout variants (scenes)</div><div>textures · models</div></div>`;
+ for(const c of D.categories){const w=c.scenes/max*78;
+  const tip=`<b>${pretty(c.key)}</b><br>${c.scenes} scenes${c.orbit?` (${c.walk} walk, ${c.orbit} orbit)`:""}<br>${c.textures} textures, ${c.models?c.models+" models":"models not logged"}`;
+  h+=`<div class="cb" data-tip="${tip.replace(/"/g,"&quot;")}"><div class="n">${pretty(c.key)}</div><div class="track"><div class="bar" style="width:${w}%"></div><span class="bar-l" style="left:calc(${w}% + 6px)">${c.scenes}${c.orbit?` <span class="num">(${c.orbit} orbit)</span>`:""}</span></div>`+
+   `<div class="vars">${Object.entries(c.variants).map(([v,n])=>`<span class="chip">${pretty(v)} <span class="c">${n}</span></span>`).join("")}</div>`+
+   `<div class="num">${c.textures} · ${c.models||"–"}</div></div>`}
+ $("catbars").innerHTML=h}
+// COLMAP-style top view: reconstruction splatted from above on white, every camera a red frustum, shown views numbered
+function camSvg(s){const C=s.cams,t=Math.tan((s.fov||.9)/2);let x0,x1,y0,y1;
+ if(s.plan)[x0,x1,y0,y1]=s.plan.extent;
+ else{x0=Math.min(...C.map(c=>c[0]));x1=Math.max(...C.map(c=>c[0]));y0=Math.min(...C.map(c=>c[1]));y1=Math.max(...C.map(c=>c[1]));const m=.1*Math.max(x1-x0,y1-y0);x0-=m;x1+=m;y0-=m;y1+=m}
+ const W=x1-x0,H=y1-y0,span=Math.max(W,H),fs=span*.03,f=v=>v.toFixed(3);
+ const steps=C.slice(1).map((c,i)=>Math.hypot(c[0]-C[i][0],c[1]-C[i][1])).sort((a,b)=>a-b),step=steps[steps.length>>1]||span;
+ const d=Math.min(Math.max(step*1.6,span*.008),span*.022);  // frustum depth: about one camera spacing, so dense paths stay readable
+ let g=s.plan?`<image href="${s.plan.img}" x="${x0}" y="${-y1}" width="${W}" height="${H}" preserveAspectRatio="none"/>`:"",p="";
+ for(const c of C){const [x,y,,rx,ry,ux,uy,fx,fy]=c,o=`${f(x)},${f(-y)}`;
+  const q=[[1,1],[1,-1],[-1,-1],[-1,1]].map(([a,b])=>`${f(x+d*(fx+t*(a*rx+b*ux)))},${f(-(y+d*(fy+t*(a*ry+b*uy))))}`);
+  p+=`M${o}L${q[0]}M${o}L${q[1]}M${o}L${q[2]}M${o}L${q[3]}M${q[0]}L${q[1]}L${q[2]}L${q[3]}Z`}
+ g+=`<path d="${p}" fill="none" stroke="#d6200f" stroke-width="1" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`;
+ s.shown.forEach((i,k)=>{const [x,y,,,,,,fx,fy]=C[i],n=Math.hypot(fx,fy)||1,lx=x-fx/n*fs*1.1,ly=-(y-fy/n*fs*1.1);
+  g+=`<circle cx="${f(lx)}" cy="${f(ly)}" r="${f(fs*.62)}" fill="var(--accent)" stroke="#fff" stroke-width="1.5" vector-effect="non-scaling-stroke"/><text x="${f(lx)}" y="${f(ly+fs*.36)}" font-size="${f(fs)}" text-anchor="middle" fill="#fff" font-weight="700">${k+1}</text>`});
+ if(s.units_per_m){const m=[5,10,20,50,100,200].find(m=>m*s.units_per_m>span*.12)||200,len=m*s.units_per_m,bx=x0+span*.03,by=-y0-span*.035;
+  g+=`<line x1="${bx}" y1="${by}" x2="${bx+len}" y2="${by}" stroke="#111" stroke-width="2" vector-effect="non-scaling-stroke"/><text x="${bx}" y="${by-fs*.45}" font-size="${f(fs*.85)}" fill="#111">${m} m</text>`}
+ return `<svg class="camsvg" viewBox="${x0} ${-y1} ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Top view of the reconstruction with camera frustums">${g}</svg>`}
+const LEGEND=`<div class="legend"><span><i></i>camera frustum</span><span><b>1</b>views shown on the right</span><span>background: top view of the PGSR reconstruction</span></div>`;
+function viewsGrid(s){return `<div class="g g3">${s.views.map((v,k)=>`<div class="cell"><img loading="lazy" src="${v.img}" alt=""><span class="badge">${k+1}</span><div class="lab">${v.view}</div></div>`).join("")}</div>`}
+const PASSES=[["rgb","rendered RGB"],["basecolor","base color"],["roughness","roughness"],["metallic","metallic"],["normal","normal"]];
+function passGrid(s){return `<div class="g g5">${PASSES.filter(([k])=>s.passes[k]).map(([k,n])=>`<div class="cell"><img loading="lazy" src="${s.passes[k]}" alt=""><div class="lab">${n}</div></div>`).join("")}</div>`}
+function lightCell(l,video){const lab=l.role==="source"?`<b>capture light</b> · ${env(l.envmap)}`:`<b>${env(l.envmap)}</b> · yaw ${l.yaw}°`;
+ const media=video&&l.video?`<video muted loop playsinline preload="none" poster="${l.img}" data-src="${l.video}"></video>`:`<img loading="lazy" src="${l.img}" alt="">`;
+ return `<div class="cell">${media}${l.night?`<span class="badge">night · test only</span>`:""}<div class="lab" title="${l.envmap}">${lab}</div><img class="env" loading="lazy" src="${l.env}" alt="${l.envmap}"></div>`}
+function modelFig(m,sub){return m.img?`<figure data-tip="<b>${pretty(m.id)}</b><br>${pretty(m.pool)}${sub?"<br>"+sub:""}"><img loading="lazy" src="${m.img}" alt="${m.id}"><figcaption>${pretty(m.id)}</figcaption></figure>`:""}
+function picker(){const s=D.samples[cur],cl=catLabel(s),cats=[...new Set(D.samples.map(catLabel))];
+ tabs($("picker"),cats.map(c=>[c,c]),cl,c=>{cur=D.samples.findIndex(x=>catLabel(x)===c);steps()});
+ const same=D.samples.map((x,i)=>[x,i]).filter(([x])=>catLabel(x)===cl);
+ tabs($("picker2"),same.map(([x,i],k)=>[String(i),`${k+1} · ${pretty(x.variant)}`]),String(cur),i=>{cur=+i;steps()});
+ $("picker2").querySelectorAll("button").forEach(b=>b.classList.add("sm"))}
+function steps(){const s=D.samples[cur];picker();
+ const sz=s.size_m?`${s.size_m[0]}×${s.size_m[1]} m footprint`:"";
+ const facts=[s.scene,`variant: ${pretty(s.variant)}`,`seed ${s.seed}`,sz,`${s.n_objects} objects`,s.n_faces?`${fmt(s.n_faces)} faces`:"",`${s.n_views} ${s.capture} cameras`,s.heldout?"held-out scene":"training scene"].filter(Boolean);
+ const mods=s.models.filter(m=>m.img);
+ let h=`<div class="step"><div><div class="t"><b>1</b>Assets</div><div class="x">CC0 Poly Haven assets. Textures are drawn per material slot from category pools (wall, roof, ground, &hellip;) with a train/eval texture split; models are props, building parts and plants placed by the generator. Glossy and transparent materials are filtered out.</div><div class="x">This scene: ${s.n_textures} textures, ${s.models.length} models.</div></div>`+
+  `<div><h4>Textures</h4><div class="sw">${s.textures.map(t=>`<figure data-tip="<b>${t.id}</b><br>pool: ${t.pool}<br>slot: ${t.slot}"><img loading="lazy" src="${t.img}" alt="${t.id}"><figcaption>${pretty(t.pool)}</figcaption></figure>`).join("")}</div>`+
+  `<h4>3D models</h4>${mods.length?`<div class="sw">${mods.map(m=>modelFig(m,m.n>1?`${m.n} instances in this scene`:"")).join("")}</div>`:`<span class="num">${s.family==="house"?"the house generator does not log its fence/tree models":"none"}</span>`}</div></div>`;
+ h+=`<div class="step"><div><div class="t"><b>2</b>Layout &amp; capture</div><div class="x">The seeded generator picks a layout variant and places buildings, props and plants. Cameras follow a ${s.capture==="walk"?"walking route at eye height plus a few raised views":"orbit around the objects"}. The map is the scene's reconstruction seen from above, with every camera drawn as a red frustum.</div><div class="x">All ${s.n_views} views are rendered under the scene's capture light (envmap at yaw 0) and are the input for reconstruction (PGSR + MatSpray). Sky is transparent, shown on grey.</div></div>`+
+  `<div><div class="layout"><div>${camSvg(s)}${LEGEND}</div>${viewsGrid(s)}</div><div class="facts">${facts.map(f=>`<span class="chip">${f}</span>`).join("")}</div>`+`</div></div>`;
+ h+=`<div class="step"><div><div class="t"><b>3</b>Material passes</div><div class="x">Ground-truth G-buffers for every capture view (shown: ${s.rview}).</div></div>${passGrid(s)}</div>`;
+ h+=`<div class="step"><div><div class="t"><b>4</b>Relighting</div><div class="x">The same view (${s.rview}) under 4 lightings: the capture light and 3 other envmaps at a random yaw (10&ndash;350°). Videos turn each envmap 360° in 10° steps (36 frames, envmap visible as background).</div></div>`+
+  `<div class="g g4">${s.lights.map(l=>lightCell(l,true)).join("")}</div></div>`;
+ $("steps").innerHTML=h;watch($("steps"))}
+const MODES={layout:["Layout & views","Top view of the reconstruction with the camera frustums, and 6 capture views evenly spaced along the path (capture light)."],
+ lighting:["Lighting","One view under the 4 lightings of the scene (capture light + 3 targets at their assigned yaw), with the envmap below."],
+ rotation:["Light rotation","The same view while each envmap turns 360° (GT clips, 36 frames). Plays when on screen."],
+ materials:["Material passes","Rendered RGB and the ground-truth G-buffers for one view."]};
+function gallery(){tabs($("modes"),Object.entries(MODES).map(([k,[n]])=>[k,n]),mode,k=>{mode=k;gallery()});
+ const cats=[...new Set(D.samples.map(catLabel))];
+ tabs($("gcats"),[["all",`all categories (${D.samples.length})`],...cats.map(c=>[c,c])],gcat,k=>{gcat=k;gallery()});
+ $("gcats").querySelectorAll("button").forEach(b=>b.classList.add("sm"));
+ $("modecap").textContent=MODES[mode][1]+` Use "details" to open a scene in the pipeline view above.`;
+ let h="";
+ D.samples.forEach((s,i)=>{if(gcat!=="all"&&catLabel(s)!==gcat)return;const c=D.categories.find(c=>c.key===s.family);let body;
+  if(mode==="layout")body=`<div class="layout"><div>${camSvg(s)}</div>${viewsGrid(s)}</div>`;
+  else if(mode==="materials")body=passGrid(s);
+  else body=`<div class="g g4">${s.lights.map(l=>lightCell(l,mode==="rotation")).join("")}</div>`;
+  h+=`<div class="grow"><div><div class="n">${catLabel(s)}</div><div class="m">${pretty(s.variant)}</div><div class="m">${s.scene}</div>`+
+   `<div class="m">${c?c.scenes+" scenes in category":""}</div><a data-i="${i}">details &uarr;</a></div>${body}</div>`});
+ $("gallery").innerHTML=h;$("gallery").querySelectorAll("a[data-i]").forEach(a=>a.onclick=()=>{cur=+a.dataset.i;steps();$("make").scrollIntoView({behavior:"smooth"})});watch($("gallery"))}
+function models(){const M=D.models.filter(m=>m.img),pools={};M.forEach(m=>pools[m.pool]=(pools[m.pool]||0)+1);
+ tabs($("modtabs"),[["all",`all (${M.length})`],...Object.entries(pools).sort((a,b)=>b[1]-a[1]).map(([p,n])=>[p,`${pretty(p)} (${n})`])],modf,k=>{modf=k;models()});
+ $("modcap").textContent=`The ${D.models.length} Poly Haven models placed in at least one scene, out of ${D.stats.models_pool} downloaded (CC0), most used first. Thumbnails are our own renders of the model as loaded by the generator.`;
+ $("modgrid").innerHTML=M.filter(m=>modf==="all"||m.pool===modf).map(m=>`<div class="ec"><img loading="lazy" src="${m.img}" alt="${m.id}"><div class="nm" title="${m.id}">${m.name}</div><div class="u">${pretty(m.pool)} · ${fmt(m.scenes)} scene${m.scenes>1?"s":""}</div></div>`).join("")}
+const ENVF={all:["All",e=>true],source:["Capture lights",e=>e.source>0],night:["Night / dusk (test only)",e=>e.night],unseen:["Held out from LTX training",e=>e.unseen]};
+function envgrid(){const E=D.envmaps;tabs($("envtabs"),Object.entries(ENVF).map(([k,[n,f]])=>[k,`${n} (${E.filter(f).length})`]),envf,k=>{envf=k;envgrid()});
+ const s=D.stats;$("envcap").textContent=`${s.envmaps} HDR maps (mostly Poly Haven 1k). Every scene gets one capture light (rotation 0) and 3 different target maps at a random yaw. Counts = scenes using the map as capture light / as a target. Tone-mapped previews, brightness compressed toward the median so night maps stay dark.`;
+ $("envgrid").innerHTML=E.filter(ENVF[envf][1]).sort((a,b)=>(b.source+b.target)-(a.source+a.target)).map(e=>`<div class="ec"><img loading="lazy" src="${e.img}" alt="${e.name}">`+
+  `<div class="nm" title="${e.name}">${env(e.name)}</div><div class="u">capture ×${e.source} · target ×${e.target}</div>`+
+  `<div class="bs">${e.night?`<span class="chip night">night/dusk · test only</span>`:""}${e.unseen&&!e.night?`<span class="chip">LTX unseen light</span>`:""}</div></div>`).join("")}
+document.addEventListener("mouseover",e=>{const t=e.target.closest("[data-tip]"),T=$("tip");if(!t){T.style.display="none";return}T.innerHTML=t.dataset.tip;T.style.display="block"});
+document.addEventListener("mousemove",e=>{const T=$("tip");if(T.style.display==="block"){const x=Math.min(e.clientX+14,innerWidth-T.offsetWidth-8);T.style.left=x+"px";T.style.top=(e.clientY+14)+"px"}});
+fetch("data.json",{cache:"no-cache"}).then(r=>r.json()).then(j=>{D=j;cur=Math.max(0,D.samples.findIndex(s=>s.scene===D.example));tiles();genSection();catbars();steps();gallery();models();envgrid()});
+</script></body></html>

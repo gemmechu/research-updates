@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reconstruction Viewer</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--fg:#1d1d1f;--muted:#6b6b70;--line:#e3e3e0;--accent:#2f6fde;--chip:#eef1f6;--warn:#8a5a00;--warn-bg:#fbf0d9}
+@media (prefers-color-scheme:dark){:root{--bg:#121214;--card:#1c1c1f;--fg:#ececef;--muted:#9a9aa2;--line:#2c2c31;--accent:#7aa7ff;--chip:#24262c;--warn:#f0c46a;--warn-bg:#3a2f17}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1360px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+header.top .wrap{padding-top:10px;padding-bottom:8px}
+.navrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}.brand{font-weight:700;font-size:16px;margin-right:4px}nav.main{display:flex;flex-wrap:wrap;gap:4px}nav.main a{color:var(--fg);text-decoration:none;font-size:14.5px;font-weight:500;padding:4px 12px;border-radius:8px}nav.main a:hover{background:var(--chip)}nav.main a.on{background:var(--accent);color:#fff}nav.sec{display:flex;flex-wrap:wrap;gap:4px 16px;padding:7px 0 0}nav.sec a{color:var(--muted);text-decoration:none;font-size:12.5px}nav.sec a:hover{color:var(--accent)}
+section{padding:18px 0 6px;scroll-margin-top:96px}h2{font-size:17px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 12px;max-width:1000px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.tab{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;padding:4px 11px;cursor:pointer;font-size:12.5px}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}.tab.sm{font-size:12px;padding:2px 10px}.tab:disabled{opacity:.4;cursor:default}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.top2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:18px;align-items:start}
+.camsvg{width:100%;height:auto;max-height:520px;border-radius:8px;display:block;background:#fff}
+.camsvg .lbl{cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--muted);margin-top:5px}.legend i{display:inline-block;width:14px;height:0;border-top:2px solid #d6200f;vertical-align:middle;margin-right:4px}
+.legend b{display:inline-grid;place-items:center;width:14px;height:14px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;margin-right:4px;vertical-align:middle}
+.facts{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}.chip{background:var(--chip);border-radius:6px;padding:1px 7px;font-size:12px;white-space:nowrap}
+.big{position:relative}.big img{width:100%;aspect-ratio:1;display:block;border-radius:8px;background:#808080}
+.big .tag{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.62);color:#fff;font-size:12.5px;border-radius:6px;padding:2px 8px}
+.src{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px;align-items:center}.src .k{color:var(--muted);font-size:12px;margin-left:4px}
+.strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-top:8px}
+.strip button{all:unset;cursor:pointer;position:relative;display:block;border-radius:6px;outline:2px solid transparent;outline-offset:1px}
+.strip button.on{outline-color:var(--accent)}.strip img{width:100%;aspect-ratio:1;display:block;border-radius:6px;background:#808080}
+.strip span{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.6);color:#fff;font-size:10.5px;border-radius:4px;padding:0 5px}
+.strip small{display:block;font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lights{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 10px}
+.lights button{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:5px;min-width:0}.lights button.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.lights img{width:100%;aspect-ratio:2/1;display:block;border-radius:5px}.lights div{font-size:12px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lights div b{font-weight:600}
+.rv{display:grid;gap:10px;grid-template-columns:minmax(0,560px);justify-content:center}.rv.side{grid-template-columns:repeat(3,minmax(0,440px))}
+.vw{position:relative}.rv:not(.side) .vw:not(.on){display:none}
+.vw video{width:100%;aspect-ratio:1;display:block;border-radius:8px;background:#000}.vw .tag{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.62);color:#fff;font-size:12.5px;border-radius:6px;padding:2px 8px}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;justify-content:center}.ctl input{width:min(420px,60vw)}.ctl .k{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:120px}
+.none{color:var(--muted);font-size:13px;padding:20px 0}
+.night{background:var(--warn-bg);color:var(--warn)}
+footer{color:var(--muted);font-size:12px;padding:20px 0 40px}
+@media (max-width:900px){.top2{grid-template-columns:1fr}.lights{grid-template-columns:repeat(2,minmax(0,1fr))}.rv.side{grid-template-columns:1fr}.strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style></head><body>
+<header class="top"><div class="wrap"><div class="navrow"><span class="brand">Procedural relighting</span><nav class="main"><a href="index.html">Dataset</a><a href="recon.html" class="on">Reconstruction</a><a href="../ltx_eval/">LTX eval</a></nav></div><nav class="sec"><a href="#views">GT · PGSR · MatSpray · LTX</a><a href="#relighting">Relighting</a></nav></div></header>
+<main class="wrap">
+<section id="views"><h2>Reconstruction: GT vs PGSR vs MatSpray vs LTX</h2>
+<p class="sub">For each sample scene: the camera path over the top view of the PGSR reconstruction, and the same view as the Blender ground truth, the PGSR render, the MatSpray PBR re-render and the LTX + image refinement, all under the scene's capture light. LTX refines the MatSpray light-rotation clips, so its still (frame 0 of the capture-light clip) exists for the 3 relighting views only. Click a number on the map or a thumbnail to change the view; press <b>1</b> / <b>2</b> / <b>3</b> / <b>4</b> to flip between GT, PGSR, MatSpray and LTX. All images are the 768&times;768 center crop LTX works on, cut out with the GT mask (sky on grey); PSNR is measured inside that mask.</p>
+<div class="tabs" id="picker"></div><div class="tabs" id="picker2"></div>
+<div class="panel"><div class="top2"><div id="map"></div><div id="viewer"></div></div></div></section>
+<section id="relighting"><h2>Relighting: GT vs MatSpray vs LTX</h2>
+<p class="sub" id="relcap"></p>
+<div class="panel" id="relight"></div></section>
+<footer>Built by tools/report/build_recon_site.py (PGSR views: tools/report/render_pgsr_views.sh). Stills 512 px, clips 400 px; renders are 800&times;800.</footer>
+</main>
+<script>
+let D,cur=0,view=0,src="gt",rview=0,rlight=0,rmode="gt";
+const $=id=>document.getElementById(id),pretty=s=>String(s).replace(/_/g," "),env=n=>n.replace(/_1k$/,"").replace(/_/g," ");
+const SRC=[["gt","GT"],["pgsr","PGSR"],["matspray","MatSpray"],["ltx","LTX + image"]],NAME={gt:"GT",pgsr:"PGSR",matspray:"MatSpray",ltx:"LTX + image"};
+function catLabel(s){return pretty(s.family)+(s.capture==="orbit"?" · orbit":"")}
+function tabs(el,items,on,cb,cls=""){el.innerHTML=items.map(([k,n,dis])=>`<button class="tab ${cls}${k===on?" on":""}" data-k="${k}"${dis?" disabled":""}>${n}</button>`).join("");el.querySelectorAll("button").forEach(b=>b.onclick=()=>cb(b.dataset.k))}
+function picker(){const s=D.scenes[cur],cl=catLabel(s),cats=[...new Set(D.scenes.map(catLabel))];
+ tabs($("picker"),cats.map(c=>[c,c]),cl,c=>{cur=D.scenes.findIndex(x=>catLabel(x)===c);scene()});
+ const same=D.scenes.map((x,i)=>[x,i]).filter(([x])=>catLabel(x)===cl);
+ tabs($("picker2"),same.map(([x,i],k)=>[String(i),`${k+1} · ${pretty(x.variant)}`]),String(cur),i=>{cur=+i;scene()},"sm")}
+// COLMAP-style top view (same as the dataset page); the numbered labels pick the view
+function camSvg(s){const C=s.cams,t=Math.tan((s.fov||.9)/2);let x0,x1,y0,y1;
+ if(s.plan)[x0,x1,y0,y1]=s.plan.extent;
+ else{x0=Math.min(...C.map(c=>c[0]));x1=Math.max(...C.map(c=>c[0]));y0=Math.min(...C.map(c=>c[1]));y1=Math.max(...C.map(c=>c[1]));const m=.1*Math.max(x1-x0,y1-y0);x0-=m;x1+=m;y0-=m;y1+=m}
+ const W=x1-x0,H=y1-y0,span=Math.max(W,H),fs=span*.032,f=v=>v.toFixed(3);
+ const steps=C.slice(1).map((c,i)=>Math.hypot(c[0]-C[i][0],c[1]-C[i][1])).sort((a,b)=>a-b),step=steps[steps.length>>1]||span;
+ const d=Math.min(Math.max(step*1.6,span*.008),span*.022);
+ const fr=(c,dd)=>{const [x,y,,rx,ry,ux,uy,fx,fy]=c,o=`${f(x)},${f(-y)}`;
+  const q=[[1,1],[1,-1],[-1,-1],[-1,1]].map(([a,b])=>`${f(x+dd*(fx+t*(a*rx+b*ux)))},${f(-(y+dd*(fy+t*(a*ry+b*uy))))}`);
+  return `M${o}L${q[0]}M${o}L${q[1]}M${o}L${q[2]}M${o}L${q[3]}M${q[0]}L${q[1]}L${q[2]}L${q[3]}Z`};
+ let g=s.plan?`<image href="${s.plan.img}" x="${x0}" y="${-y1}" width="${W}" height="${H}" preserveAspectRatio="none"/>`:"";
+ g+=`<path d="${C.map(c=>fr(c,d)).join("")}" fill="none" stroke="#d6200f" stroke-width="1" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`;
+ g+=`<path d="${fr(C[s.shown[view]],d*2.2)}" fill="rgba(47,111,222,.18)" stroke="#2f6fde" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`;
+ s.shown.forEach((i,k)=>{const [x,y,,,,,,fx,fy]=C[i],n=Math.hypot(fx,fy)||1,lx=x-fx/n*fs*1.1,ly=-(y-fy/n*fs*1.1),on=k===view;
+  g+=`<g class="lbl" data-k="${k}"><circle cx="${f(lx)}" cy="${f(ly)}" r="${f(fs*.66)}" fill="${on?"#2f6fde":"#fff"}" stroke="#2f6fde" stroke-width="1.5" vector-effect="non-scaling-stroke"/><text x="${f(lx)}" y="${f(ly+fs*.36)}" font-size="${f(fs)}" text-anchor="middle" fill="${on?"#fff":"#2f6fde"}" font-weight="700">${k+1}</text></g>`});
+ if(s.units_per_m){const m=[5,10,20,50,100,200].find(m=>m*s.units_per_m>span*.12)||200,len=m*s.units_per_m,bx=x0+span*.03,by=-y0-span*.035;
+  g+=`<line x1="${bx}" y1="${by}" x2="${bx+len}" y2="${by}" stroke="#111" stroke-width="2" vector-effect="non-scaling-stroke"/><text x="${bx}" y="${by-fs*.45}" font-size="${f(fs*.85)}" fill="#111">${m} m</text>`}
+ return `<svg class="camsvg" viewBox="${x0} ${-y1} ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Top view with camera frustums">${g}</svg>`}
+const avg=(s,k)=>{const v=s.views.map(x=>x[k+"_psnr"]).filter(x=>x!=null);return v.length?(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):null};
+function drawMap(){const s=D.scenes[cur];
+ const facts=[s.scene,`variant: ${pretty(s.variant)}`,`${s.n_views} ${s.capture} cameras`,s.heldout?"held-out scene":"training scene",
+  avg(s,"pgsr")&&`PGSR ${avg(s,"pgsr")} dB (6 views)`,avg(s,"matspray")&&`MatSpray ${avg(s,"matspray")} dB (6 views)`,s.matspray_psnr&&`MatSpray ${s.matspray_psnr} dB (every 10th view)`].filter(Boolean);
+ $("map").innerHTML=camSvg(s)+`<div class="legend"><span><i></i>camera frustum</span><span><b>1</b>views (click to show)</span><span>background: top view of the PGSR reconstruction</span></div>`+
+  `<div class="facts">${facts.map(f=>`<span class="chip">${f}</span>`).join("")}</div>`;
+ $("map").querySelectorAll(".lbl").forEach(g=>g.onclick=()=>{view=+g.dataset.k;drawMap();drawViewer()})}
+function drawViewer(){const s=D.scenes[cur],v=s.views[view];if(!v[src])src="gt";
+ const lab=k=>{const p=v[k+"_psnr"];return k==="gt"?"GT":`${NAME[k]}${p!=null?` · ${p.toFixed(1)} dB`:""}`};
+ $("viewer").innerHTML=`<div class="src" id="srcbtn"></div><div class="big"><img src="${v[src]}" alt=""><span class="tag">${lab(src)} · ${v.view}</span></div>`+
+  `<div class="strip">${s.views.map((x,k)=>`<button data-k="${k}" class="${k===view?"on":""}"><img loading="lazy" src="${x[src]||x.gt}" alt=""><span>${k+1}</span><small>${x.view}</small></button>`).join("")}</div>`;
+ tabs($("srcbtn"),SRC.map(([k],i)=>[k,`${i+1} · ${lab(k)}`,!v[k]]),src,k=>{src=k;drawViewer()});
+ $("srcbtn").insertAdjacentHTML("beforeend",`<span class="k">keys 1 – 4${v.ltx?"":" · LTX only for the 3 relighting views"}</span>`);
+ $("viewer").querySelectorAll(".strip button").forEach(b=>b.onclick=()=>{view=+b.dataset.k;drawMap();drawViewer()});
+ const pre=[v.gt,v.pgsr,v.matspray].filter(Boolean);pre.forEach(u=>{const i=new Image();i.src=u})}
+const SPLIT={ltx_train:"LTX training clip",train:"training split (scene + light seen)",test_seen_scene_unseen_light:"test: seen scene · unseen light",test_unseen_scene_seen_light:"test: unseen scene · seen light",test_unseen_scene_unseen_light:"test: unseen scene · unseen light"};
+const RSRC=[["gt","GT","vg"],["matspray","MatSpray","vm"],["ltx","LTX + image","vl"]];
+function drawRelight(){const s=D.scenes[cur],R=s.relight,el=$("relight");
+ if(!R||!R.lights.length){el.innerHTML=`<div class="none">No relighting clips for this scene.</div>`;$("relcap").textContent="";return}
+ rview=Math.min(rview,R.views.length-1);rlight=Math.min(rlight,R.lights.length-1);
+ const L=R.lights[rlight],v=R.views[rview],P=(L.psnr||{})[v]||{},sp=(L.split||{})[v];
+ $("relcap").textContent=`The scene under its capture light and 3 target envmaps; each clip turns the envmap 360° in ${R.step}° steps (${R.frames} frames, envmap visible as background). GT = Blender, MatSpray = relit with the recovered materials, LTX + image = the MatSpray clip refined by the image-conditioned LTX IC-LoRA (step 6000), which also gets the scene's source image. Drag the slider to compare one light direction; PSNR = mean over the light angles, scene pixels only.`;
+ el.innerHTML=`<div class="lights">${R.lights.map((l,i)=>`<button class="${i===rlight?"on":""}" data-i="${i}"><img src="${l.env}" alt="${l.envmap}"><div>${l.role==="source"?`<b>capture light</b> · ${env(l.envmap)}`:`<b>${env(l.envmap)}</b> · yaw ${l.yaw}°`}</div></button>`).join("")}</div>`+
+  `<div class="tabs" id="rviews"></div><div class="tabs" id="rmodes"></div>`+
+  `<div class="rv${rmode==="side"?" side":""}">`+RSRC.map(([k,n,id])=>{const u=L[k]&&L[k][v];
+   return `<div class="vw${rmode===k?" on":""}" data-k="${k}">${u?`<video id="${id}" muted loop playsinline autoplay poster="${u.replace(".mp4",".jpg")}" src="${u}"></video>`:`<div class="none">no ${n} clip</div>`}<span class="tag">${n}${P[k]!=null?` · ${P[k].toFixed(1)} dB`:""}</span></div>`}).join("")+`</div>`+
+  `<div class="ctl"><button class="tab" id="play">pause</button><input type="range" id="yaw" min="0" max="${R.frames-1}" value="0"><span class="k" id="yawl"></span>${sp?`<span class="chip">${SPLIT[sp]||sp}</span>`:""}</div>`;
+ el.querySelectorAll(".lights button").forEach(b=>b.onclick=()=>{rlight=+b.dataset.i;drawRelight()});
+ tabs($("rviews"),R.views.map((x,i)=>[String(i),`view ${x}`]),String(rview),i=>{rview=+i;drawRelight()},"sm");
+ modeTabs();
+ const vids=RSRC.map(([,,id])=>$(id)).filter(Boolean),lead=vids[0],yaw=$("yaw"),yl=$("yawl"),fps=12;
+ const show=t=>{const k=Math.min(R.frames-1,Math.floor(t*fps+1e-3));yaw.value=k;yl.textContent=`frame ${k+1}/${R.frames} · envmap turned ${k*R.step}°`};
+ if(lead){lead.addEventListener("timeupdate",()=>{show(lead.currentTime);if(!lead.paused)vids.slice(1).forEach(x=>{if(Math.abs(x.currentTime-lead.currentTime)>.09)x.currentTime=lead.currentTime})})}show(0);
+ $("play").onclick=()=>{if(!lead)return;if(lead.paused){vids.forEach(x=>x.play());$("play").textContent="pause"}else{vids.forEach(x=>x.pause());$("play").textContent="play"}};
+ yaw.oninput=()=>{const t=(+yaw.value+.5)/fps;vids.forEach(x=>{x.pause();x.currentTime=t});$("play").textContent="play";show(t)}}
+function modeTabs(){const L=D.scenes[cur].relight.lights[rlight],v=D.scenes[cur].relight.views[rview],P=(L.psnr||{})[v]||{};
+ tabs($("rmodes"),[["gt","1 · GT"],["matspray",`3 · MatSpray${P.matspray!=null?` · ${P.matspray.toFixed(1)} dB`:""}`],["ltx",`4 · LTX + image${P.ltx!=null?` · ${P.ltx.toFixed(1)} dB`:""}`,!(L.ltx&&L.ltx[v])],["side","side by side"]],rmode,k=>{rmode=k;setMode()})}
+function setMode(){const rv=document.querySelector(".rv");if(!rv)return;rv.classList.toggle("side",rmode==="side");
+ rv.querySelectorAll(".vw").forEach(w=>w.classList.toggle("on",w.dataset.k===rmode));modeTabs()}
+function scene(){view=Math.min(view,D.scenes[cur].views.length-1);picker();drawMap();drawViewer();drawRelight()}
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"&&e.target.type!=="range")return;const k={"1":"gt","2":"pgsr","3":"matspray","4":"ltx"}[e.key];if(!k)return;
+ const v=D.scenes[cur].views[view];if(v[k]){src=k;drawViewer()}if(k!=="pgsr"&&rmode!=="side"){rmode=k;setMode()}});
+ const v=D.scenes[cur].views[view];if(v[k]){src=k;drawViewer()}if(k!=="pgsr"&&rmode!=="side"){rmode=k;setMode()}});
+fetch("recon.json",{cache:"no-cache"}).then(r=>r.json()).then(j=>{D=j;cur=Math.max(0,D.scenes.findIndex(s=>s.scene===D.example));scene()});
+</script></body></html>
